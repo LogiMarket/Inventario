@@ -1,17 +1,17 @@
 [phases.setup]
-# Ensure node & pnpm are available
-nixPkgs = ["nodejs_20", "pnpm"]
+# Ensure Node is available
+nixPkgs = ["nodejs_20"]
 
 [phases.install]
-# Override default frozen lockfile to regenerate lockfile in CI
+# Prefer npm and use package-lock if present
 cmds = [
-  "pnpm install --no-frozen-lockfile"
+  "npm ci || npm install"
 ]
 
 [phases.build]
 cmds = [
-  "pnpm run build"
+  "npm run build"
 ]
 
 [start]
-cmd = "pnpm start"
+cmd = "npm start"
