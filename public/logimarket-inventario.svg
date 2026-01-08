@@ -1,0 +1,13 @@
+<svg width="800" height="800" viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>Inventario Logimarket</title>
+  <defs>
+    <style>
+      .wing { fill: #27304a; }
+    </style>
+  </defs>
+  <circle cx="430" cy="400" r="270" stroke="#27304a" stroke-width="44" fill="none" />
+  <path class="wing" d="M120 355c0-55 45-100 100-100h260c30 0 55 25 55 55s-25 55-55 55H120z"/>
+  <path class="wing" d="M120 430c0-35 28-63 63-63h297c35 0 63 28 63 63s-28 63-63 63H120z"/>
+  <path class="wing" d="M120 509c0-35 28-63 63-63h246c35 0 63 28 63 63s-28 63-63 63H120z"/>
+  <path class="wing" d="M120 588c0-35 28-63 63-63h180c35 0 63 28 63 63s-28 63-63 63H120z"/>
+</svg>

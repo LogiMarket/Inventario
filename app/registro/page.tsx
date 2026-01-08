@@ -73,7 +73,14 @@ export default function RegistroPage() {
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="space-y-4">
           <div className="flex justify-center">
-            <Image src="/logimarket-logo.png" alt="Logimarket" width={200} height={50} className="h-12 w-auto" />
+            <Image
+              src="/logimarket-inventario.svg"
+              alt="Inventario Logimarket"
+              width={140}
+              height={140}
+              className="h-14 w-auto"
+              priority
+            />
           </div>
           <CardTitle className="text-2xl font-bold text-center">Crear Cuenta</CardTitle>
           <CardDescription className="text-center text-base">Regístrate en el sistema de Logimarket</CardDescription>
