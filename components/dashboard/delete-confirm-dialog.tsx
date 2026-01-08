@@ -59,13 +59,15 @@ export default function DeleteConfirmDialog({ open, onOpenChange, item, onSucces
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
-          <AlertDialogDescription className="space-y-2">
-            <p>Esta acción no se puede deshacer. Esto eliminará permanentemente el siguiente equipo del inventario:</p>
-            <div className="bg-muted p-3 rounded-md mt-2">
-              <p className="font-medium">
-                {item.objeto} - {item.modelo}
-              </p>
-              <p className="text-sm text-muted-foreground">Código de barras: {item.codigo_barras}</p>
+          <AlertDialogDescription asChild>
+            <div className="space-y-3">
+              <p>Esta acción no se puede deshacer. Esto eliminará permanentemente el siguiente equipo del inventario:</p>
+              <div className="bg-muted p-3 rounded-md">
+                <p className="font-medium">
+                  {item.objeto} - {item.modelo}
+                </p>
+                <p className="text-sm text-muted-foreground">Código de barras: {item.codigo_barras}</p>
+              </div>
             </div>
           </AlertDialogDescription>
         </AlertDialogHeader>
