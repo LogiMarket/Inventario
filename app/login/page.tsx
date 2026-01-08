@@ -52,11 +52,11 @@ export default function LoginPage() {
         <CardHeader className="space-y-4">
           <div className="flex justify-center">
             <Image
-              src="/logimarket-inventario.svg"
+              src="/logimarket-logo.png"
               alt="Inventario Logimarket"
-              width={140}
-              height={140}
-              className="h-14 w-auto"
+              width={200}
+              height={50}
+              className="h-12 w-auto"
               priority
             />
           </div>
