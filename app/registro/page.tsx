@@ -12,6 +12,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import Link from "next/link"
 import Image from "next/image"
 
+export const dynamic = "force-dynamic";
+
 export default function RegistroPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -20,13 +22,14 @@ export default function RegistroPage() {
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
-  const supabase = getSupabaseBrowserClient()
 
   const handleRegistro = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
     setSuccess(false)
     setLoading(true)
+
+    const supabase = getSupabaseBrowserClient()
 
     if (password !== confirmPassword) {
       setError("Las contraseñas no coinciden")
