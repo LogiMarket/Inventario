@@ -2,9 +2,9 @@
   "name": "my-v0-project",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "npm@10",
   "engines": {
-    "node": ">=18.18"
+    "node": ">=18.18",
+    "npm": ">=10.0.0"
   },
   "scripts": {
     "build": "next build",
