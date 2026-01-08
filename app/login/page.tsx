@@ -26,6 +26,13 @@ export default function LoginPage() {
     setError("")
     setLoading(true)
 
+    // Validar dominio de Logimarket
+    if (!email.endsWith("@logimarket.com.mx")) {
+      setError("Solo usuarios de Logimarket (@logimarket.com.mx) pueden acceder al sistema")
+      setLoading(false)
+      return
+    }
+
     try {
       const supabase = getSupabaseBrowserClient()
       const { data, error } = await supabase.auth.signInWithPassword({

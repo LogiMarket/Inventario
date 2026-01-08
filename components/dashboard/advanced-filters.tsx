@@ -143,6 +143,7 @@ export default function AdvancedFilters({ filters, onFilterChange, areas, respon
                 <SelectItem value="activo">Activo</SelectItem>
                 <SelectItem value="en_reparacion">En reparación</SelectItem>
                 <SelectItem value="dado_de_baja">Dado de baja</SelectItem>
+                <SelectItem value="regresa_al_almacen">Regresa al Almacén</SelectItem>
               </SelectContent>
             </Select>
           </div>

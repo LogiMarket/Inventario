@@ -29,6 +29,13 @@ export default function RegistroPage() {
     setSuccess(false)
     setLoading(true)
 
+    // Validar dominio de Logimarket
+    if (!email.endsWith("@logimarket.com.mx")) {
+      setError("Solo usuarios de Logimarket (@logimarket.com.mx) pueden registrarse")
+      setLoading(false)
+      return
+    }
+
     const supabase = getSupabaseBrowserClient()
 
     if (password !== confirmPassword) {
