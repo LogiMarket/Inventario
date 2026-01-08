@@ -1,25 +1,36 @@
-import { createServerClient } from "@supabase/ssr"
-import { cookies } from "next/headers"
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 
 export async function getSupabaseServerClient() {
-  const cookieStore = await cookies()
-  const schema = process.env.NEXT_PUBLIC_SUPABASE_DB_SCHEMA || "public"
+  const cookieStore = await cookies();
+  const schema = process.env.NEXT_PUBLIC_SUPABASE_DB_SCHEMA ?? "public";
 
-  return createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key =
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY ??
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!url || !key) {
+    throw new Error(
+      `Missing Supabase env vars (server): url=${Boolean(url)} key=${Boolean(key)}`
+    );
+  }
+
+  return createServerClient(url, key, {
     db: { schema },
     cookies: {
       getAll() {
-        return cookieStore.getAll()
+        return cookieStore.getAll();
       },
       setAll(cookiesToSet) {
         try {
-          cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
+          cookiesToSet.forEach(({ name, value, options }) =>
+            cookieStore.set(name, value, options)
+          );
         } catch {
-          // El método `setAll` fue llamado desde un Server Component.
-          // Esto puede ser ignorado si tienes middleware refrescando
-          // las sesiones de usuario.
+          // Ignorable en Server Components
         }
       },
     },
-  })
+  });
 }
