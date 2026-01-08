@@ -1,23 +1,14 @@
 FROM node:20-bookworm-slim
 
-# APT: forzar HTTPS + IPv4 (soporta sources.list o debian.sources)
+# APT: forzar IPv4 (sin tocar sources; así evita el problema de certificados por HTTPS)
 RUN set -eux; \
   echo 'Acquire::ForceIPv4 "true";' > /etc/apt/apt.conf.d/99force-ipv4; \
-  if [ -f /etc/apt/sources.list ]; then \
-    sed -i 's|http://deb.debian.org|https://deb.debian.org|g' /etc/apt/sources.list; \
-    sed -i 's|http://security.debian.org|https://security.debian.org|g' /etc/apt/sources.list; \
-  fi; \
-  if [ -f /etc/apt/sources.list.d/debian.sources ]; then \
-    sed -i 's|http://deb.debian.org|https://deb.debian.org|g' /etc/apt/sources.list.d/debian.sources; \
-    sed -i 's|http://security.debian.org|https://security.debian.org|g' /etc/apt/sources.list.d/debian.sources; \
-  fi; \
   apt-get update; \
-  apt-get install -y --no-install-recommends ca-certificates libatomic1; \
+  apt-get install -y --no-install-recommends libatomic1; \
   rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Si usas npm (como dicen tus logs)
 COPY package.json package-lock.json* ./
 RUN npm ci
 
