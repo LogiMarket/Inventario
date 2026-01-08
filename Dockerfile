@@ -12,6 +12,8 @@ WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm ci
 
+# Copia el env de build (si está en el contexto)
+COPY .env.production .env.production
 COPY . .
 RUN npm run build
 
