@@ -29,27 +29,29 @@ export default function DocumentViewAction({ itemId, codigoBarras }: Props) {
 
   const loadFiles = async () => {
     setLoading(true)
-    const prefix = `inventario/${itemId}-${codigoBarras}`
-    const { data, error } = await supabase.storage.from("documentos").list("inventario", {
-      search: `${itemId}-${codigoBarras}`,
-    })
+    try {
+      const prefix = `inventario/${itemId}-${codigoBarras}`
+      const { data, error } = await supabase.storage.from("documentos").list("inventario")
 
-    if (!error && data) {
-      const fileList = await Promise.all(
-        data.map(async (file: any) => {
-          const { data: urlData } = supabase.storage
-            .from("documentos")
-            .getPublicUrl(`inventario/${file.name}`)
-          return {
-            name: file.name,
-            path: `inventario/${file.name}`,
-            url: urlData.publicUrl,
-          }
-        })
-      )
+      if (error) throw error
+
+      // Filtrar solo archivos que correspondan a este item
+      const itemFiles = data.filter((file: any) => file.name.startsWith(`${itemId}-${codigoBarras}`))
+
+      const fileList = itemFiles.map((file: any) => {
+        const { data: urlData } = supabase.storage.from("documentos").getPublicUrl(`inventario/${file.name}`)
+        return {
+          name: file.name,
+          path: `inventario/${file.name}`,
+          url: urlData.publicUrl,
+        }
+      })
       setFiles(fileList)
+    } catch (err: any) {
+      console.error("Error loading files:", err)
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   const handleView = (url: string) => {

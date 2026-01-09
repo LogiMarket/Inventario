@@ -26,23 +26,28 @@ export default function DocumentUploadAction({ itemId, codigoBarras }: Props) {
     if (!file) return
     setLoading(true)
 
-    const path = `inventario/${itemId}-${codigoBarras}-${Date.now()}-${file.name}`
-    const { error } = await supabase.storage.from("documentos").upload(path, file, { upsert: false, cacheControl: "3600" })
+    try {
+      const path = `inventario/${itemId}-${codigoBarras}-${Date.now()}-${file.name}`
+      const { error } = await supabase.storage.from("documentos").upload(path, file, { upsert: false, cacheControl: "3600" })
 
-    setLoading(false)
-    event.target.value = ""
+      if (error) {
+        throw error
+      }
 
-    if (error) {
       toast({
-        title: "Error al subir documento",
-        description: error.message,
-        variant: "destructive",
-      })
-    } else {
-      toast({
-        title: "Documento subido",
+        title: "✅ Documento subido",
         description: `${file.name} se ha subido correctamente`,
       })
+    } catch (err: any) {
+      console.error("Upload error:", err)
+      toast({
+        title: "❌ Error al subir documento",
+        description: err.message || "Intenta de nuevo",
+        variant: "destructive",
+      })
+    } finally {
+      setLoading(false)
+      event.target.value = ""
     }
   }
 
