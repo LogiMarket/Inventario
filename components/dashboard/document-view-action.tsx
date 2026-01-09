@@ -30,13 +30,29 @@ export default function DocumentViewAction({ itemId, codigoBarras }: Props) {
   const loadFiles = async () => {
     setLoading(true)
     try {
-      const prefix = `inventario/${itemId}-${codigoBarras}`
-      const { data, error } = await supabase.storage.from("documentos").list("inventario")
+      // Listar todos los archivos en la carpeta inventario
+      const { data, error } = await supabase.storage
+        .from("documentos")
+        .list("inventario", { limit: 1000, sortBy: { column: "created_at", order: "desc" } })
 
-      if (error) throw error
+      if (error) {
+        console.error("Error listing files:", error)
+        throw error
+      }
+
+      if (!data) {
+        setFiles([])
+        setLoading(false)
+        return
+      }
 
       // Filtrar solo archivos que correspondan a este item
-      const itemFiles = data.filter((file: any) => file.name.startsWith(`${itemId}-${codigoBarras}`))
+      const prefix = `${itemId}-${codigoBarras}`
+      const itemFiles = data.filter((file: any) => file.name.startsWith(prefix) && file.id)
+
+      console.log(`Buscando archivos con prefijo: ${prefix}`)
+      console.log(`Archivos encontrados: ${itemFiles.length}`)
+      console.log("Files:", itemFiles)
 
       const fileList = itemFiles.map((file: any) => {
         const { data: urlData } = supabase.storage.from("documentos").getPublicUrl(`inventario/${file.name}`)
@@ -49,6 +65,7 @@ export default function DocumentViewAction({ itemId, codigoBarras }: Props) {
       setFiles(fileList)
     } catch (err: any) {
       console.error("Error loading files:", err)
+      setFiles([])
     } finally {
       setLoading(false)
     }
