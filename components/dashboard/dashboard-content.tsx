@@ -15,6 +15,7 @@ import ExportButton from "./export-button"
 import InventoryStats from "./inventory-stats"
 import Image from "next/image"
 import ViewItemDialog from "./view-item-dialog"
+import DocumentUploadButton from "./document-upload-button"
 
 interface InventarioItem {
   id: number
@@ -197,7 +198,8 @@ export default function DashboardContent({ initialData, userEmail }: DashboardCo
                 />
               </div>
             </div>
-            <div className="flex gap-2 w-full md:w-auto">
+            <div className="flex gap-2 w-full md:w-auto flex-wrap md:flex-nowrap">
+              <DocumentUploadButton />
               <ExportButton data={filteredInventario} />
               <Button onClick={handleAddNew} className="gap-2 flex-1 md:flex-none">
                 <Plus className="h-4 w-4" />
