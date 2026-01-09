@@ -15,7 +15,8 @@ import ExportButton from "./export-button"
 import InventoryStats from "./inventory-stats"
 import Image from "next/image"
 import ViewItemDialog from "./view-item-dialog"
-import DocumentUploadButton from "./document-upload-button"
+import DocumentUploadAction from "./document-upload-action"
+import DocumentViewAction from "./document-view-action"
 
 interface InventarioItem {
   id: number
@@ -198,8 +199,7 @@ export default function DashboardContent({ initialData, userEmail }: DashboardCo
                 />
               </div>
             </div>
-            <div className="flex gap-2 w-full md:w-auto flex-wrap md:flex-nowrap">
-              <DocumentUploadButton />
+            <div className="flex gap-2 w-full md:w-auto">
               <ExportButton data={filteredInventario} />
               <Button onClick={handleAddNew} className="gap-2 flex-1 md:flex-none">
                 <Plus className="h-4 w-4" />
@@ -286,6 +286,8 @@ export default function DashboardContent({ initialData, userEmail }: DashboardCo
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
+                            <DocumentUploadAction itemId={item.id} codigoBarras={item.codigo_barras} />
+                            <DocumentViewAction itemId={item.id} codigoBarras={item.codigo_barras} />
                             <Button onClick={() => handleView(item)} variant="ghost" size="sm" className="h-8 w-8 p-0">
                               <Eye className="h-4 w-4" />
                               <span className="sr-only">Ver</span>
