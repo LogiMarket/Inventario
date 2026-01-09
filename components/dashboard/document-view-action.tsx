@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { FileText, Download, Eye } from "lucide-react"
+import { FileText, Download, Eye, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useToast } from "@/hooks/use-toast"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 
 interface Props {
@@ -25,7 +26,9 @@ interface FileInfo {
 export default function DocumentViewAction({ itemId, codigoBarras }: Props) {
   const [files, setFiles] = useState<FileInfo[]>([])
   const [loading, setLoading] = useState(false)
+  const [deleting, setDeleting] = useState<string | null>(null)
   const supabase = getSupabaseBrowserClient()
+  const { toast } = useToast()
 
   const loadFiles = async () => {
     setLoading(true)
@@ -87,6 +90,30 @@ export default function DocumentViewAction({ itemId, codigoBarras }: Props) {
     }
   }
 
+  const handleDelete = async (path: string, name: string) => {
+    setDeleting(path)
+    try {
+      const { error } = await supabase.storage.from("documentos").remove([path])
+      if (error) {
+        throw error
+      }
+      setFiles(files.filter((f) => f.path !== path))
+      toast({
+        title: "Documento eliminado",
+        description: `${name.split("-").slice(3).join("-")} ha sido eliminado.`,
+      })
+    } catch (err: any) {
+      console.error("Error deleting file:", err)
+      toast({
+        title: "Error al eliminar",
+        description: "No se pudo eliminar el documento.",
+        variant: "destructive",
+      })
+    } finally {
+      setDeleting(null)
+    }
+  }
+
   return (
     <DropdownMenu onOpenChange={(open) => open && loadFiles()}>
       <DropdownMenuTrigger asChild>
@@ -127,6 +154,16 @@ export default function DocumentViewAction({ itemId, codigoBarras }: Props) {
                   title="Descargar"
                 >
                   <Download className="h-3 w-3" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 w-6 p-0 hover:text-destructive"
+                  onClick={() => handleDelete(file.path, file.name)}
+                  disabled={deleting === file.path}
+                  title="Eliminar"
+                >
+                  <Trash2 className="h-3 w-3" />
                 </Button>
               </div>
             </div>
