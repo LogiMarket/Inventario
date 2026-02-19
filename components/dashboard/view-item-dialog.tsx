@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
+import { formatDateOnlyEs } from "@/lib/utils"
 
 interface InventarioItem {
   id: number
@@ -53,7 +54,7 @@ export default function ViewItemDialog({ open, item, onClose }: ViewItemDialogPr
           <Field label="Garantía" value={item.garantia || "-"} />
           <Field
             label="Fecha garantía"
-            value={item.fecha_garantia ? new Date(item.fecha_garantia).toLocaleDateString("es-ES") : "-"}
+            value={item.fecha_garantia ? formatDateOnlyEs(item.fecha_garantia) : "-"}
           />
           <Field label="Observaciones" value={item.observaciones || "-"} multiline className="md:col-span-2" />
           <Field

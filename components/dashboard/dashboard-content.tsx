@@ -17,6 +17,7 @@ import Image from "next/image"
 import ViewItemDialog from "./view-item-dialog"
 import DocumentUploadAction from "./document-upload-action"
 import DocumentViewAction from "./document-view-action"
+import { formatDateOnlyEs } from "@/lib/utils"
 
 interface InventarioItem {
   id: number
@@ -190,8 +191,8 @@ export default function DashboardContent({ initialData, userEmail }: DashboardCo
             <div className="flex-1 w-full md:max-w-md">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="text"
+                            {item.fecha_garantia
+                              ? formatDateOnlyEs(item.fecha_garantia)
                   placeholder="Búsqueda rápida..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -281,7 +282,7 @@ export default function DashboardContent({ initialData, userEmail }: DashboardCo
                         <TableCell>{item.estado_equipo || "Sin estado"}</TableCell>
                         <TableCell>
                           {item.fecha_garantia
-                            ? new Date(item.fecha_garantia).toLocaleDateString("es-ES")
+                            ? formatDateOnlyEs(item.fecha_garantia)
                             : item.garantia || ""}
                         </TableCell>
                         <TableCell className="text-right">

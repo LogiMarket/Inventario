@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Package, Users, Building, Calendar } from "lucide-react"
+import { isDateOnOrAfterToday } from "@/lib/utils"
 
 interface InventarioItem {
   id: number
@@ -20,11 +21,9 @@ export default function InventoryStats({ data }: InventoryStatsProps) {
   const totalAreas = new Set(data.map((item) => item.area)).size
 
   const activos = data.filter((item) => (item.estado_equipo ?? "").toLowerCase() === "activo").length
-  const hoy = new Date()
   const conGarantiaVigente = data.filter((item) => {
     if (!item.fecha_garantia) return false
-    const fecha = new Date(item.fecha_garantia)
-    return fecha >= hoy
+    return isDateOnOrAfterToday(item.fecha_garantia)
   }).length
 
   return (

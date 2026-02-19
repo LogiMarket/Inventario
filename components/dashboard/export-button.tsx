@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Download } from "lucide-react"
+import { formatDateOnlyEs } from "@/lib/utils"
 
 interface InventarioItem {
   id: number
@@ -47,7 +48,7 @@ export default function ExportButton({ data }: ExportButtonProps) {
           `"${item.codigo_barras}"`,
           `"${item.estado_equipo ?? ""}"`,
           `"${item.garantia ?? ""}"`,
-          item.fecha_garantia ? new Date(item.fecha_garantia).toLocaleDateString("es-ES") : "",
+          item.fecha_garantia ? formatDateOnlyEs(item.fecha_garantia) : "",
           `"${item.observaciones ?? ""}"`,
           new Date(item.created_at).toLocaleDateString("es-ES"),
         ].join(","),

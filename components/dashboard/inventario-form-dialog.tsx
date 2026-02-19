@@ -18,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
+import { extractDateOnly } from "@/lib/utils"
 
 interface InventarioItem {
   id: number
@@ -67,7 +68,7 @@ export default function InventarioFormDialog({
       setCodigoBarras(editingItem.codigo_barras)
       setEstadoEquipo(editingItem.estado_equipo || "")
       setGarantia(editingItem.garantia || "")
-      setFechaGarantia(editingItem.fecha_garantia ? editingItem.fecha_garantia.split("T")[0] : "")
+      setFechaGarantia(editingItem.fecha_garantia ? (extractDateOnly(editingItem.fecha_garantia) ?? "") : "")
       setObservaciones(editingItem.observaciones || "")
     } else {
       resetForm()
@@ -101,7 +102,7 @@ export default function InventarioFormDialog({
         codigo_barras: codigoBarras,
         estado_equipo: estadoEquipo || null,
         garantia: garantia || null,
-        fecha_garantia: fechaGarantia ? new Date(fechaGarantia).toISOString() : null,
+        fecha_garantia: fechaGarantia || null,
         observaciones: observaciones || null,
       }
 
